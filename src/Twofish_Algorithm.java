@@ -379,8 +379,8 @@ public final class Twofish_Algorithm // implicit no-argument constructor
         if (DEBUG) trace(IN, "makeKey(" + k + ")");
         if (k == null)
             throw new InvalidKeyException("Empty key");
-        int length = k.length;
-        if (!(length == 8 || length == 16 || length == 24 || length == 32))
+        int keyBytesLength = k.length;
+        if (!(keyBytesLength == 8 || keyBytesLength == 16 || keyBytesLength == 24 || keyBytesLength == 32))
             throw new InvalidKeyException("Incorrect key length");
 
         if (DEBUG && debuglevel > 7) {
@@ -389,7 +389,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
             System.out.println("Raw=" + toString(k));
             System.out.println();
         }
-        int k64Cnt = length / 8;
+        int k64Cnt = keyBytesLength / 8;
         int subkeyCnt = ROUND_SUBKEYS + 2 * ROUNDS;
         int[] k32e = new int[4]; // even 32-bit entities
         int[] k32o = new int[4]; // odd 32-bit entities
@@ -399,7 +399,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
         // compute S-box keys using (12, 8) Reed-Solomon code over GF(256)
         //
         int i, j, offset = 0;
-        for (i = 0, j = k64Cnt - 1; i < 4 && offset < length; i++, j--) {
+        for (i = 0, j = k64Cnt - 1; i < 4 && offset < keyBytesLength; i++, j--) {
             k32e[i] = (k[offset++] & 0xFF) |
                     (k[offset++] & 0xFF) << 8 |
                     (k[offset++] & 0xFF) << 16 |
