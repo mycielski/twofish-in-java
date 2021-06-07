@@ -42,17 +42,38 @@ public class Twofish {
         return digit;
     }
 
-    public static byte[] encryptByteArray(byte[] plaintext, String keyString) throws InvalidKeyException {
-        byte[] keyBytes = decodeHexString(keyString);
-        return encryptByteArray(plaintext, keyBytes);
+    public static byte[] twofishEncrypt(String plaintext, byte[] keyBytes) throws InvalidKeyException {
+        return twofishEncrypt(decodeHexString(plaintext), keyBytes);
     }
 
-    public static byte[] decryptByteArray(byte[] ciphertext, String keyString) throws InvalidKeyException {
-        byte[] keyBytes = decodeHexString(keyString);
-        return decryptByteArray(ciphertext, keyBytes);
+    public static byte[] twofishDecrypt(String ciphertext, byte[] keyBytes) throws InvalidKeyException {
+        return twofishDecrypt(decodeHexString(ciphertext), keyBytes);
     }
 
-    public static byte[] encryptByteArray(byte[] plaintext, byte[] keyBytes) throws InvalidKeyException {
+
+    public static byte[] twofishEncrypt(String plaintext, String keyString) throws InvalidKeyException {
+        byte[] keyBytes = decodeHexString(keyString);
+        byte[] plaintextBytes = decodeHexString(plaintext);
+        return twofishEncrypt(plaintextBytes, keyBytes);
+    }
+
+    public static byte[] twofishDecrypt(String ciphertext, String keyString) throws InvalidKeyException {
+        byte[] keyBytes = decodeHexString(keyString);
+        byte[] ciphertextBytes = decodeHexString(ciphertext);
+        return twofishDecrypt(ciphertextBytes, keyBytes);
+    }
+
+    public static byte[] twofishEncrypt(byte[] plaintext, String keyString) throws InvalidKeyException {
+        byte[] keyBytes = decodeHexString(keyString);
+        return twofishEncrypt(plaintext, keyBytes);
+    }
+
+    public static byte[] twofishDecrypt(byte[] ciphertext, String keyString) throws InvalidKeyException {
+        byte[] keyBytes = decodeHexString(keyString);
+        return twofishDecrypt(ciphertext, keyBytes);
+    }
+
+    public static byte[] twofishEncrypt(byte[] plaintext, byte[] keyBytes) throws InvalidKeyException {
         byte[] plaintextBytes = padding(plaintext);
         byte[] ciphertext = new byte[0];
 
@@ -65,7 +86,7 @@ public class Twofish {
         return ciphertext;
     }
 
-    public static byte[] decryptByteArray(byte[] ciphertextBytes, byte[] keyBytes) throws InvalidKeyException {
+    public static byte[] twofishDecrypt(byte[] ciphertextBytes, byte[] keyBytes) throws InvalidKeyException {
         byte[] plaintextBytes = new byte[0];
 
         Object key = makeKey(keyBytes);

@@ -11,7 +11,7 @@ public class Encryption {
      * @param sessionKey The session key to use for encryption.
      * @return The ciphertext generated from a plaintext using the session key.
      */
-    public static byte[] blockEncrypt(byte[] in, int inOffset, Object sessionKey) {
+    protected static byte[] blockEncrypt(byte[] in, int inOffset, Object sessionKey) {
         Object[] sk = (Object[]) sessionKey; // extract S-box and session key
         int[] sBox = (int[]) sk[0];
         int[] sKey = (int[]) sk[1];
