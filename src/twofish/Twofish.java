@@ -87,7 +87,6 @@ public class Twofish {
                         break;
                     }
                 }
-                System.out.println(paddingBytes);
                 byte[] decryptedBlockWithoutPadding = new byte[BLOCK_SIZE - paddingBytes];
                 for (int j = paddingBytes; j < BLOCK_SIZE; j++) {
                     decryptedBlockWithoutPadding[j - paddingBytes] = decryptedBlock[j];
