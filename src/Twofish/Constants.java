@@ -180,12 +180,6 @@ final class Constants {
     protected static final int GF256_FDBK = 0x169;
     protected static final int GF256_FDBK_2 = 0x169 / 2;
     protected static final int GF256_FDBK_4 = 0x169 / 4;
-    /**
-     * data for hexadecimal visualisation.
-     */
-    protected static final char[] HEX_DIGITS = {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-    };
 
     /**
      * Maximum Distance Separable matrix
