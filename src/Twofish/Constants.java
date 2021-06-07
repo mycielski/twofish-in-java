@@ -229,12 +229,8 @@ final class Constants {
 
     }
 
-
-
-
 // Static code - to intialise the MDS matrix
 //...........................................................................
-
 
     private static int LFSR1(int x) {
         return (x >> 1) ^
@@ -245,10 +241,6 @@ final class Constants {
         return (x >> 2) ^
                 ((x & 0x02) != 0 ? GF256_FDBK_2 : 0) ^
                 ((x & 0x01) != 0 ? GF256_FDBK_4 : 0);
-    }
-
-    private static int Mx_1(int x) {
-        return x;
     }
 
     private static int Mx_X(int x) {
