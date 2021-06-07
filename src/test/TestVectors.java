@@ -19,7 +19,7 @@ class TestVectors {
             key[i] = 0;
             plaintext[i] = 0;
         }
-        Object keyObject = Key.makeKey(key);
+        Object keyObject = KeyWrapper.makeKey(key);
         byte[] ciphertext = Encryption.blockEncrypt(plaintext,0,keyObject);
         byte[] decrypted = Decryption.blockDecrypt(ciphertext, 0, keyObject);
         assertEquals(decrypted.length, ciphertext.length);
@@ -39,7 +39,7 @@ class TestVectors {
     public void testVector2() throws InvalidKeyException {
         byte[] key = decodeHexString("0123456789ABCDEFFEDCBA98765432100011223344556677");
         byte[] plaintext = decodeHexString("00000000000000000000000000000000");
-        Object keyObject = Key.makeKey(key);
+        Object keyObject = KeyWrapper.makeKey(key);
         byte[] ciphertext = Encryption.blockEncrypt(plaintext,0,keyObject);
         byte[] decrypted = Decryption.blockDecrypt(ciphertext,0,keyObject);
         assertEquals(decrypted.length, ciphertext.length);
@@ -53,7 +53,7 @@ class TestVectors {
     }
 
 
-    public byte[] decodeHexString(String hexString) {
+    private byte[] decodeHexString(String hexString) {
         if (hexString.length() % 2 == 1) {
             throw new IllegalArgumentException(
                     "Invalid hexadecimal String supplied.");
@@ -65,7 +65,7 @@ class TestVectors {
         }
         return bytes;
     }
-    public byte hexToByte(String hexString) {
+    private byte hexToByte(String hexString) {
         int firstDigit = toDigit(hexString.charAt(0));
         int secondDigit = toDigit(hexString.charAt(1));
         return (byte) ((firstDigit << 4) + secondDigit);

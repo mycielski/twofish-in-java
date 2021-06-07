@@ -1,4 +1,4 @@
-// $Id: $
+package to_co_pobrałem_z_internetu;// $Id: $
 //
 // $Log: $
 // Revision 1.0  1998/03/24  raif
@@ -42,7 +42,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
 // Debugging methods and variables
 //...........................................................................
 
-    static final String NAME = "Twofish_Algorithm";
+    static final String NAME = "to_co_pobrałem_z_internetu.Twofish_Algorithm";
     static final boolean IN = true, OUT = false;
 
     static final boolean DEBUG = Twofish_Properties.GLOBAL_DEBUG;

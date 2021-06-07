@@ -2,7 +2,7 @@ package twofish;
 
 import static twofish.Constants.*;
 
-public class Key {
+public class KeyWrapper {
     /**
      * Expand a user-supplied key material into a session key.
      *

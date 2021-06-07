@@ -10,7 +10,7 @@ public class Main {
             key[i] = 0;
             plaintext[i] = 0;
         }
-        Object keyObject = Key.makeKey(key);
+        Object keyObject = KeyWrapper.makeKey(key);
         byte[] ciphertext = Encryption.blockEncrypt(plaintext,0,keyObject);
         for (byte b : ciphertext) {
             String st = String.format("%02X", b);

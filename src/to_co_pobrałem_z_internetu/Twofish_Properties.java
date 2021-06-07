@@ -1,4 +1,4 @@
-// $Id: $
+package to_co_pobrałem_z_internetu;// $Id: $
 //
 // $Log: $
 // Revision 1.0  1998/03/24  raif
@@ -42,7 +42,7 @@ public class Twofish_Properties // implicit no-argument constructor
     static final String ALGORITHM = "twofish";
     static final double VERSION = 0.2;
     static final String FULL_NAME = ALGORITHM + " ver. " + VERSION;
-    static final String NAME = "Twofish_Properties";
+    static final String NAME = "to_co_pobrałem_z_internetu.Twofish_Properties";
 
     static final Properties properties = new Properties();
 
@@ -50,9 +50,9 @@ public class Twofish_Properties // implicit no-argument constructor
      * Default properties in case .properties file was not found.
      */
     private static final String[][] DEFAULT_PROPERTIES = {
-            {"Trace.Twofish_Algorithm", "true"},
+            {"Trace.to_co_pobrałem_z_internetu.Twofish_Algorithm", "true"},
             {"Debug.Level.*", "1"},
-            {"Debug.Level.Twofish_Algorithm", "9"},
+            {"Debug.Level.to_co_pobrałem_z_internetu.Twofish_Algorithm", "9"},
     };
 
     static {

@@ -11,6 +11,11 @@ final class Constants {
     protected static final int SK_BUMP = 0x01010101;
     protected static final int SK_ROTL = 9;
 
+    protected static final byte[] PADDING_BLOCK = new byte[16];
+    static {
+        PADDING_BLOCK[0] = (byte) 128;
+    }
+
     /**
      * Fixed 8x8 permutation substitution box
      */
