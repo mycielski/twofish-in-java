@@ -374,7 +374,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
      * @return This cipher's round keys.
      * @throws InvalidKeyException If the key is invalid.
      */
-    public static synchronized Object makeKey(byte[] k)
+    public static Object makeKey(byte[] k)
             throws InvalidKeyException {
         if (DEBUG) trace(IN, "makeKey(" + k + ")");
         if (k == null)
