@@ -1,7 +1,7 @@
-package Twofish;
+package twofish;
 
 
-import static Twofish.Constants.*;
+import static twofish.Constants.*;
 
 public class IntermediateUtilityMethods {
 

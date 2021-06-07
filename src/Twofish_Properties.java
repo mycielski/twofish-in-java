@@ -39,7 +39,7 @@ public class Twofish_Properties // implicit no-argument constructor
 
     static final boolean GLOBAL_DEBUG = false;
 
-    static final String ALGORITHM = "Twofish";
+    static final String ALGORITHM = "twofish";
     static final double VERSION = 0.2;
     static final String FULL_NAME = ALGORITHM + " ver. " + VERSION;
     static final String NAME = "Twofish_Properties";

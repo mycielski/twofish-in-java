@@ -1,4 +1,4 @@
-import Twofish.*;
+import twofish.*;
 
 
 public class Main {

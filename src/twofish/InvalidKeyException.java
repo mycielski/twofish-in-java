@@ -1,4 +1,4 @@
-package Twofish;
+package twofish;
 
 public final class InvalidKeyException extends java.security.InvalidKeyException {
     public InvalidKeyException(String message) {

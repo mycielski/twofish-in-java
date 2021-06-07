@@ -1,4 +1,4 @@
-package Twofish;
+package twofish;
 
 final class Constants {
 
