@@ -7,19 +7,12 @@ final class Constants {
     protected static final int INPUT_WHITEN = 0;
     protected static final int OUTPUT_WHITEN = INPUT_WHITEN + BLOCK_SIZE / 4;
     protected static final int ROUND_SUBKEYS = OUTPUT_WHITEN + BLOCK_SIZE / 4; // 2*(# rounds)
-    protected static final int TOTAL_SUBKEYS = ROUND_SUBKEYS + 2 * ROUNDS;
     protected static final int SK_STEP = 0x02020202;
     protected static final int SK_BUMP = 0x01010101;
     protected static final int SK_ROTL = 9;
 
     /**
-     * MDS matrix
-     */
-    protected static final int[][] MDS = new int[4][256]; // blank final
-    protected static final int RS_GF_FDBK = 0x14D; // field generator
-
-    /**
-     * Fixed 8x8 permutation S-boxes
+     * Fixed 8x8 permutation substitution box
      */
     protected static final byte[][] P = new byte[][]{
             {  // p0
@@ -181,5 +174,95 @@ final class Constants {
     protected static final int P_33 = P_31 ^ 1;
     protected static final int P_34 = 1;
 
+    /**
+     * Primitive polynomial for GF(256)
+     */
+    protected static final int GF256_FDBK = 0x169;
+    protected static final int GF256_FDBK_2 = 0x169 / 2;
+    protected static final int GF256_FDBK_4 = 0x169 / 4;
+    /**
+     * data for hexadecimal visualisation.
+     */
+    protected static final char[] HEX_DIGITS = {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
+
+    /**
+     * Maximum Distance Separable matrix
+     */
+    protected static final int[][] MDS = new int[4][256]; // blank final
+    protected static final int RS_GF_FDBK = 0x14D; // field generator
+
+    static {
+
+        //
+        // precompute the MDS matrix
+        //
+        int[] m1 = new int[2];
+        int[] mX = new int[2];
+        int[] mY = new int[2];
+        int i, j;
+        for (i = 0; i < 256; i++) {
+            j = P[0][i] & 0xFF; // compute all the matrix elements
+            m1[0] = j;
+            mX[0] = Mx_X(j) & 0xFF;
+            mY[0] = Mx_Y(j) & 0xFF;
+
+            j = P[1][i] & 0xFF;
+            m1[1] = j;
+            mX[1] = Mx_X(j) & 0xFF;
+            mY[1] = Mx_Y(j) & 0xFF;
+
+            MDS[0][i] = m1[P_00] << 0 | // fill matrix with above elements
+                    mX[P_00] << 8 |
+                    mY[P_00] << 16 |
+                    mY[P_00] << 24;
+            MDS[1][i] = mY[P_10] << 0 |
+                    mY[P_10] << 8 |
+                    mX[P_10] << 16 |
+                    m1[P_10] << 24;
+            MDS[2][i] = mX[P_20] << 0 |
+                    mY[P_20] << 8 |
+                    m1[P_20] << 16 |
+                    mY[P_20] << 24;
+            MDS[3][i] = mX[P_30] << 0 |
+                    m1[P_30] << 8 |
+                    mY[P_30] << 16 |
+                    mX[P_30] << 24;
+        }
+
+
+
+    }
+
+
+
+
+// Static code - to intialise the MDS matrix
+//...........................................................................
+
+
+    private static int LFSR1(int x) {
+        return (x >> 1) ^
+                ((x & 0x01) != 0 ? GF256_FDBK_2 : 0);
+    }
+
+    private static int LFSR2(int x) {
+        return (x >> 2) ^
+                ((x & 0x02) != 0 ? GF256_FDBK_2 : 0) ^
+                ((x & 0x01) != 0 ? GF256_FDBK_4 : 0);
+    }
+
+    private static int Mx_1(int x) {
+        return x;
+    }
+
+    private static int Mx_X(int x) {
+        return x ^ LFSR2(x);
+    }            // 5B
+
+    private static int Mx_Y(int x) {
+        return x ^ LFSR1(x) ^ LFSR2(x);
+    } // EF
 
 }
