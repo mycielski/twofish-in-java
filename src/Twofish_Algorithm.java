@@ -807,29 +807,29 @@ public final class Twofish_Algorithm // implicit no-argument constructor
         if (DEBUG) trace(IN, "self_test(" + keysize + ")");
         boolean ok = false;
         try {
-            byte[] kb = new byte[keysize];
-            byte[] pt = new byte[BLOCK_SIZE];
+            byte[] keyBytes = new byte[keysize];
+            byte[] plaintextBytes = new byte[BLOCK_SIZE];
             int i;
 
             for (i = 0; i < keysize; i++)
-                kb[i] = (byte) i;
+                keyBytes[i] = (byte) i;
             for (i = 0; i < BLOCK_SIZE; i++)
-                pt[i] = (byte) i;
+                plaintextBytes[i] = (byte) i;
 
             if (DEBUG && debuglevel > 6) {
                 System.out.println("==========");
                 System.out.println();
                 System.out.println("KEYSIZE=" + (8 * keysize));
-                System.out.println("KEY=" + toString(kb));
+                System.out.println("KEY=" + toString(keyBytes));
                 System.out.println();
             }
-            Object key = makeKey(kb);
+            Object key = makeKey(keyBytes);
 
             if (DEBUG && debuglevel > 6) {
                 System.out.println("Intermediate Ciphertext Values (Encryption)");
                 System.out.println();
             }
-            byte[] ct = blockEncrypt(pt, 0, key);
+            byte[] ct = blockEncrypt(plaintextBytes, 0, key);
 
             if (DEBUG && debuglevel > 6) {
                 System.out.println("Intermediate Plaintext Values (Decryption)");
@@ -837,7 +837,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
             }
             byte[] cpt = blockDecrypt(ct, 0, key);
 
-            ok = areEqual(pt, cpt);
+            ok = areEqual(plaintextBytes, cpt);
             if (!ok)
                 throw new RuntimeException("Symmetric operation failed");
         } catch (Exception x) {
@@ -903,8 +903,8 @@ public final class Twofish_Algorithm // implicit no-argument constructor
 //...........................................................................
 
     public static void main(String[] args) {
-        self_test(16);
-        self_test(24);
-        self_test(32);
+        System.out.println(self_test(16));
+        System.out.println(self_test(24));
+        System.out.println(self_test(32));
     }
 }
