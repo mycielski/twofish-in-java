@@ -507,8 +507,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
      * @param sessionKey The session key to use for encryption.
      * @return The ciphertext generated from a plaintext using the session key.
      */
-    public static byte[]
-    blockEncrypt(byte[] in, int inOffset, Object sessionKey) {
+    public static byte[] blockEncrypt(byte[] in, int inOffset, Object sessionKey) {
         if (DEBUG) trace(IN, "blockEncrypt(" + in + ", " + inOffset + ", " + sessionKey + ")");
         Object[] sk = (Object[]) sessionKey; // extract S-box and session key
         int[] sBox = (int[]) sk[0];
@@ -591,8 +590,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
      * @param sessionKey The session key to use for decryption.
      * @return The plaintext generated from a ciphertext using the session key.
      */
-    public static byte[]
-    blockDecrypt(byte[] in, int inOffset, Object sessionKey) {
+    public static byte[] blockDecrypt(byte[] in, int inOffset, Object sessionKey) {
         if (DEBUG) trace(IN, "blockDecrypt(" + in + ", " + inOffset + ", " + sessionKey + ")");
         Object[] sk = (Object[]) sessionKey; // extract S-box and session key
         int[] sBox = (int[]) sk[0];
@@ -712,7 +710,7 @@ public final class Twofish_Algorithm // implicit no-argument constructor
         return r;
     }
 
-    /*
+    /**
      * Reed-Solomon code parameters: (12, 8) reversible code:<p>
      * <pre>
      *   g(x) = x**4 + (a + 1/a) x**3 + a x**2 + (a + 1/a) x + 1
@@ -829,15 +827,15 @@ public final class Twofish_Algorithm // implicit no-argument constructor
                 System.out.println("Intermediate Ciphertext Values (Encryption)");
                 System.out.println();
             }
-            byte[] ct = blockEncrypt(plaintextBytes, 0, key);
+            byte[] ciphertext = blockEncrypt(plaintextBytes, 0, key);
 
             if (DEBUG && debuglevel > 6) {
                 System.out.println("Intermediate Plaintext Values (Decryption)");
                 System.out.println();
             }
-            byte[] cpt = blockDecrypt(ct, 0, key);
+            byte[] ciphertextDecrypted = blockDecrypt(ciphertext, 0, key);
 
-            ok = areEqual(plaintextBytes, cpt);
+            ok = areEqual(plaintextBytes, ciphertextDecrypted);
             if (!ok)
                 throw new RuntimeException("Symmetric operation failed");
         } catch (Exception x) {
