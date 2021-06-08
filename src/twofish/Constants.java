@@ -13,20 +13,6 @@ final class Constants {
     protected static final int SK_BUMP = 0x01010101;
     protected static final int SK_ROTL = 9;
 
-    protected static final byte[] PADDING_BLOCK1 = new byte[16];
-    protected static final byte[] PADDING_BLOCK2 =new byte[16];
-    static {
-        Random random = new Random();
-        PADDING_BLOCK1[0] = (byte) 128;
-        for (int i = 1; i < PADDING_BLOCK1.length; i++) {
-            PADDING_BLOCK1[i] = (byte) (random.nextInt(61) + 2);
-        }
-        PADDING_BLOCK2[15] = (byte) 1;
-        for (int i = 0; i < PADDING_BLOCK2.length - 1; i++) {
-            PADDING_BLOCK2[i] = (byte) (random.nextInt(61) + 2);
-        }
-    }
-
     /**
      * Fixed 8x8 permutation substitution box
      */
@@ -164,7 +150,6 @@ final class Constants {
                     (byte) 0x55, (byte) 0x09, (byte) 0xBE, (byte) 0x91
             }
     };
-
     /**
      * Define the fixed p0/p1 permutations used in keyed S-box lookup. By changing the following constant definitions,
      * the S-boxes will automatically get changed in the Twofish engine.
@@ -189,19 +174,35 @@ final class Constants {
     protected static final int P_32 = 1;
     protected static final int P_33 = P_31 ^ 1;
     protected static final int P_34 = 1;
-
     /**
      * Primitive polynomial for GF(256)
      */
     protected static final int GF256_FDBK = 0x169;
     protected static final int GF256_FDBK_2 = 0x169 / 2;
     protected static final int GF256_FDBK_4 = 0x169 / 4;
-
     /**
      * Maximum Distance Separable matrix
      */
     protected static final int[][] MDS = new int[4][256]; // blank final
     protected static final int RS_GF_FDBK = 0x14D; // field generator
+
+    /**
+     * Padding blocks. Static code below used to initialize those padding blocks with random data to make known-plaintext attacks difficult.
+     */
+    protected static final byte[] PADDING_BLOCK1 = new byte[16];
+    protected static final byte[] PADDING_BLOCK2 = new byte[16];
+
+    static {
+        Random random = new Random();
+        PADDING_BLOCK1[0] = (byte) 128;
+        for (int i = 1; i < PADDING_BLOCK1.length; i++) {
+            PADDING_BLOCK1[i] = (byte) (random.nextInt(61) + 2);
+        }
+        PADDING_BLOCK2[15] = (byte) 1;
+        for (int i = 0; i < PADDING_BLOCK2.length - 1; i++) {
+            PADDING_BLOCK2[i] = (byte) (random.nextInt(61) + 2);
+        }
+    }
 
     static {
 
@@ -240,7 +241,6 @@ final class Constants {
                     mY[P_30] << 16 |
                     mX[P_30] << 24;
         }
-
 
 
     }

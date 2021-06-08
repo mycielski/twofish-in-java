@@ -31,10 +31,7 @@ class MDSMatrixCalculations {
         }
 
 
-
     }
-
-
 
 
 // Static code - to intialise the MDS matrix

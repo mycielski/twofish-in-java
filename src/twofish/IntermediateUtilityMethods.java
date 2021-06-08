@@ -1,10 +1,11 @@
 package twofish;
 
 
+import java.util.Arrays;
+
 import static twofish.Constants.*;
 
 public class IntermediateUtilityMethods {
-
 
 
     protected static int b0(int x) {
@@ -125,4 +126,37 @@ public class IntermediateUtilityMethods {
                 sBox[0x200 + 2 * _b(x, R + 3) + 1];
     }
 
+    static byte[] decodeHexString(String hexString) throws InvalidKeyException {
+        if (hexString.length() % 2 == 1) {
+            throw new InvalidKeyException(
+                    "Non-integer number of bytes.");
+        }
+
+        byte[] bytes = new byte[hexString.length() / 2];
+        for (int i = 0; i < hexString.length(); i += 2) {
+            bytes[i / 2] = hexToByte(hexString.substring(i, i + 2));
+        }
+        return bytes;
+    }
+
+    private static byte hexToByte(String hexString) {
+        int firstDigit = toDigit(hexString.charAt(0));
+        int secondDigit = toDigit(hexString.charAt(1));
+        return (byte) ((firstDigit << 4) + secondDigit);
+    }
+
+    private static int toDigit(char hexChar) {
+        int digit = Character.digit(hexChar, 16);
+        if (digit == -1) {
+            throw new IllegalArgumentException(
+                    "Invalid Hexadecimal Character: " + hexChar);
+        }
+        return digit;
+    }
+
+    static byte[] concatenateArrays(byte[] array1, byte[] array2) {
+        byte[] result = Arrays.copyOf(array1, array1.length + array2.length);
+        System.arraycopy(array2, 0, result, array1.length, array2.length);
+        return result;
+    }
 }
