@@ -1,14 +1,14 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Assertions;
-import twofish.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import twofish.Twofish;
 import twofish.exceptions.InvalidHexException;
 import twofish.exceptions.InvalidKeyException;
 import twofish.exceptions.WrongNumberOfBitsException;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class TestVectors {
 
@@ -124,7 +124,6 @@ class TestVectors {
     }
 
 
-
     @Test
     @DisplayName("Wrong key length")
     public void wrongKeyLength() {
@@ -156,7 +155,6 @@ class TestVectors {
     }
 
 
-
     private byte[] removePaddingFromCiphertext(byte[] paddedCiphertext) {
         byte[] ciphertextWithoutPadding = new byte[16];
         for (int i = 0; i < 16; i++) {
@@ -164,6 +162,7 @@ class TestVectors {
         }
         return ciphertextWithoutPadding;
     }
+
     private byte[] hexStringToByteArray(String hexString) {
         if (hexString.length() % 2 == 1) {
             throw new IllegalArgumentException(
@@ -176,16 +175,18 @@ class TestVectors {
         }
         return bytes;
     }
+
     private byte hexToByte(String hexString) {
         int firstDigit = hexCharToInt(hexString.charAt(0));
         int secondDigit = hexCharToInt(hexString.charAt(1));
         return (byte) ((firstDigit << 4) + secondDigit);
     }
+
     private int hexCharToInt(char hexChar) {
         int digit = Character.digit(hexChar, 16);
-        if(digit == -1) {
+        if (digit == -1) {
             throw new IllegalArgumentException(
-                    "Invalid Hexadecimal Character: "+ hexChar);
+                    "Invalid Hexadecimal Character: " + hexChar);
         }
         return digit;
     }
