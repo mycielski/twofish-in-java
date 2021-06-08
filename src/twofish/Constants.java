@@ -3,7 +3,7 @@ package twofish;
 import java.util.Random;
 
 /**
- * This class contains all constants used in encrypting and decrypting data, including padding blocks.
+ * This class calculates and contains all constants used in encrypting and decrypting data, including padding blocks.
  */
 final class Constants {
 
