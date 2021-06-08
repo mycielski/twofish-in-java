@@ -2,8 +2,7 @@ package twofish;
 
 import java.util.Arrays;
 
-import static twofish.Constants.BLOCK_SIZE;
-import static twofish.Constants.PADDING_BLOCK;
+import static twofish.Constants.*;
 import static twofish.Decryption.blockDecrypt;
 import static twofish.Encryption.blockEncrypt;
 import static twofish.KeyWrapper.makeKey;
@@ -11,7 +10,7 @@ import static twofish.KeyWrapper.makeKey;
 public class Twofish {
 
     private static boolean isPaddingBlock(byte[] block) {
-        return Arrays.equals(block, PADDING_BLOCK);
+        return (Arrays.equals(block, PADDING_BLOCK1) || Arrays.equals(block,PADDING_BLOCK2));
     }
 
     private static byte[] decodeHexString(String hexString) throws InvalidKeyException {
@@ -42,38 +41,38 @@ public class Twofish {
         return digit;
     }
 
-    public static byte[] twofishEncrypt(String plaintext, byte[] keyBytes) throws InvalidKeyException {
-        return twofishEncrypt(decodeHexString(plaintext), keyBytes);
+    public static byte[] twofishECBEncrypt(String plaintext, byte[] keyBytes) throws InvalidKeyException {
+        return twofishECBEncrypt(decodeHexString(plaintext), keyBytes);
     }
 
-    public static byte[] twofishDecrypt(String ciphertext, byte[] keyBytes) throws InvalidKeyException {
-        return twofishDecrypt(decodeHexString(ciphertext), keyBytes);
+    public static byte[] twofishECBDecrypt(String ciphertext, byte[] keyBytes) throws InvalidKeyException {
+        return twofishECBDecrypt(decodeHexString(ciphertext), keyBytes);
     }
 
 
-    public static byte[] twofishEncrypt(String plaintext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBEncrypt(String plaintext, String keyString) throws InvalidKeyException {
         byte[] keyBytes = decodeHexString(keyString);
         byte[] plaintextBytes = decodeHexString(plaintext);
-        return twofishEncrypt(plaintextBytes, keyBytes);
+        return twofishECBEncrypt(plaintextBytes, keyBytes);
     }
 
-    public static byte[] twofishDecrypt(String ciphertext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBDecrypt(String ciphertext, String keyString) throws InvalidKeyException {
         byte[] keyBytes = decodeHexString(keyString);
         byte[] ciphertextBytes = decodeHexString(ciphertext);
-        return twofishDecrypt(ciphertextBytes, keyBytes);
+        return twofishECBDecrypt(ciphertextBytes, keyBytes);
     }
 
-    public static byte[] twofishEncrypt(byte[] plaintext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBEncrypt(byte[] plaintext, String keyString) throws InvalidKeyException {
         byte[] keyBytes = decodeHexString(keyString);
-        return twofishEncrypt(plaintext, keyBytes);
+        return twofishECBEncrypt(plaintext, keyBytes);
     }
 
-    public static byte[] twofishDecrypt(byte[] ciphertext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBDecrypt(byte[] ciphertext, String keyString) throws InvalidKeyException {
         byte[] keyBytes = decodeHexString(keyString);
-        return twofishDecrypt(ciphertext, keyBytes);
+        return twofishECBDecrypt(ciphertext, keyBytes);
     }
 
-    public static byte[] twofishEncrypt(byte[] plaintext, byte[] keyBytes) throws InvalidKeyException {
+    public static byte[] twofishECBEncrypt(byte[] plaintext, byte[] keyBytes) throws InvalidKeyException {
         byte[] plaintextBytes = padding(plaintext);
         byte[] ciphertext = new byte[0];
 
@@ -86,7 +85,7 @@ public class Twofish {
         return ciphertext;
     }
 
-    public static byte[] twofishDecrypt(byte[] ciphertextBytes, byte[] keyBytes) throws InvalidKeyException {
+    public static byte[] twofishECBDecrypt(byte[] ciphertextBytes, byte[] keyBytes) throws InvalidKeyException {
         byte[] plaintextBytes = new byte[0];
 
         Object key = makeKey(keyBytes);
@@ -94,6 +93,7 @@ public class Twofish {
         boolean ciphertextIsPadded = false;
         for (int i = 0; i < ciphertextBytes.length; i += 16) {
             byte[] decryptedBlock = blockDecrypt(ciphertextBytes, i, key);
+            /*
             if (i == 0 && isPaddingBlock(decryptedBlock)) {
                 ciphertextIsPadded = true;
                 continue;
@@ -115,20 +115,48 @@ public class Twofish {
                 plaintextBytes = concatenateArrays(plaintextBytes, decryptedBlockWithoutPadding);
                 continue;
             }
+            */
             plaintextBytes = concatenateArrays(plaintextBytes, decryptedBlock);
         }
+        return removePadding(plaintextBytes);
+        //return plaintextBytes;
+    }
 
-        return plaintextBytes;
+    private static byte[] removePadding(byte[] paddedText) {
+        int paddingBytes = 0;
+        if (paddedText[0] == (byte) 128) {
+            paddingBytes++;
+            while (paddedText[paddingBytes] == (byte) 0) {
+                paddingBytes++;
+            }
+            if (paddedText[paddingBytes] == (byte) 1) {
+                paddingBytes++;
+                byte[] plaintextWithoutPadding = new byte[paddedText.length - paddingBytes];
+                System.out.println(plaintextWithoutPadding.length);
+                for (int i = paddingBytes; i < paddedText.length; i++) {
+                    plaintextWithoutPadding[i - paddingBytes] = paddedText[i];
+                }
+                return plaintextWithoutPadding;
+            } else {
+                //todo exception
+            }
+        } else {
+            //todo exception
+        }
+        return null;
     }
 
     private static byte[] padding(byte[] plaintextBytes) {
-        if (plaintextBytes.length % 16 == 0) return plaintextBytes;
+        if (plaintextBytes.length % 16 == 0) {
+            return concatenateArrays(PADDING_BLOCK1, concatenateArrays(PADDING_BLOCK2, plaintextBytes));
+            //return plaintextBytes;
+        }
         else {
             int paddingLength = 16 - plaintextBytes.length % 16;
             byte[] padding = new byte[paddingLength];
             padding[paddingLength - 1] = (byte) 1;
             byte[] output;
-            output = concatenateArrays(PADDING_BLOCK, padding);
+            output = concatenateArrays(PADDING_BLOCK1, padding);
             output = concatenateArrays(output, plaintextBytes);
             return output;
         }
@@ -139,5 +167,24 @@ public class Twofish {
         System.arraycopy(array2, 0, result, array1.length, array2.length);
         return result;
     }
+
+    public static void main(String[] args) throws InvalidKeyException {
+        byte[] key = new byte[16];
+        byte[] plaintext = decodeHexString("019F9809DE1711858FAAC3A3BA20FBC3");
+        byte[] ciphertext = twofishECBEncrypt(plaintext, "D491DB16E7B1C39E86CB086B789F5419");
+        for (byte b : ciphertext) {
+            String st = String.format("%02X", b);
+            System.out.print(st);
+        }
+        System.out.println();
+        System.out.println("--------------------");
+        byte[] decrypted = twofishECBDecrypt(ciphertext, "D491DB16E7B1C39E86CB086B789F5419");
+        for (byte b : decrypted) {
+            String st = String.format("%02X", b);
+            System.out.print(st);
+        }
+        System.out.println();
+    }
+
 
 }

@@ -4,7 +4,7 @@ import static twofish.Constants.*;
 
 public class Decryption {
     /**
-     * Decrypt exactly one block of ciphertext.
+     * Decrypt one block of ciphertext in ECB mode (no IV).
      *
      * @param in         The ciphertext.
      * @param inOffset   Index of in from which to start considering data.

@@ -3,7 +3,7 @@ package twofish;
 final class Constants {
 
     protected static final int ROUNDS = 16; // how many rounds of encryption (default = 16)
-    protected static final int BLOCK_SIZE = 16; // bytes in a data-block
+    protected static final int BLOCK_SIZE = 16; // how many bytes in one data-block
     protected static final int INPUT_WHITEN = 0;
     protected static final int OUTPUT_WHITEN = INPUT_WHITEN + BLOCK_SIZE / 4;
     protected static final int ROUND_SUBKEYS = OUTPUT_WHITEN + BLOCK_SIZE / 4; // 2*(# rounds)
@@ -11,9 +11,11 @@ final class Constants {
     protected static final int SK_BUMP = 0x01010101;
     protected static final int SK_ROTL = 9;
 
-    protected static final byte[] PADDING_BLOCK = new byte[16];
+    protected static final byte[] PADDING_BLOCK1 = new byte[16];
+    protected static final byte[] PADDING_BLOCK2 =new byte[16];
     static {
-        PADDING_BLOCK[0] = (byte) 128;
+        PADDING_BLOCK1[0] = (byte) 128;
+        PADDING_BLOCK2[15] = (byte) 1;
     }
 
     /**
