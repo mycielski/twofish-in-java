@@ -1,5 +1,7 @@
 package twofish;
 
+import java.util.Random;
+
 final class Constants {
 
     protected static final int ROUNDS = 16; // how many rounds of encryption (default = 16)
@@ -14,8 +16,15 @@ final class Constants {
     protected static final byte[] PADDING_BLOCK1 = new byte[16];
     protected static final byte[] PADDING_BLOCK2 =new byte[16];
     static {
+        Random random = new Random();
         PADDING_BLOCK1[0] = (byte) 128;
+        for (int i = 1; i < PADDING_BLOCK1.length; i++) {
+            PADDING_BLOCK1[i] = (byte) (random.nextInt(61) + 2);
+        }
         PADDING_BLOCK2[15] = (byte) 1;
+        for (int i = 0; i < PADDING_BLOCK2.length - 1; i++) {
+            PADDING_BLOCK2[i] = (byte) (random.nextInt(61) + 2);
+        }
     }
 
     /**

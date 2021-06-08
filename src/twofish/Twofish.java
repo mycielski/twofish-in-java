@@ -2,16 +2,13 @@ package twofish;
 
 import java.util.Arrays;
 
-import static twofish.Constants.*;
+import static twofish.Constants.PADDING_BLOCK1;
+import static twofish.Constants.PADDING_BLOCK2;
 import static twofish.Decryption.blockDecrypt;
 import static twofish.Encryption.blockEncrypt;
 import static twofish.KeyWrapper.makeKey;
 
 public class Twofish {
-
-    private static boolean isPaddingBlock(byte[] block) {
-        return (Arrays.equals(block, PADDING_BLOCK1) || Arrays.equals(block,PADDING_BLOCK2));
-    }
 
     private static byte[] decodeHexString(String hexString) throws InvalidKeyException {
         if (hexString.length() % 2 == 1) {
@@ -103,8 +100,11 @@ public class Twofish {
         int paddingBytes = 0;
         if (paddedText[0] == (byte) 128) {
             paddingBytes++;
-            while (paddedText[paddingBytes] == (byte) 0) {
+            while (paddedText[paddingBytes] != (byte) 1) {
                 paddingBytes++;
+                if (paddingBytes > 32) {
+                    //todo exception
+                }
             }
             if (paddedText[paddingBytes] == (byte) 1) {
                 paddingBytes++;
@@ -126,8 +126,7 @@ public class Twofish {
         if (plaintextBytes.length % 16 == 0) {
             return concatenateArrays(PADDING_BLOCK1, concatenateArrays(PADDING_BLOCK2, plaintextBytes));
             //return plaintextBytes;
-        }
-        else {
+        } else {
             int paddingLength = 16 - plaintextBytes.length % 16;
             byte[] padding = new byte[paddingLength];
             padding[paddingLength - 1] = (byte) 1;
