@@ -1,12 +1,9 @@
-import twofish.*;
+import twofish.Twofish;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import static twofish.Twofish.twofishECBDecrypt;
-import static twofish.Twofish.twofishECBEncrypt;
 
 
 public class Main {

@@ -2,16 +2,19 @@ package twofish;
 
 import java.util.Random;
 
+/**
+ * This class contains all constants used in encrypting and decrypting data, including padding blocks.
+ */
 final class Constants {
 
     protected static final int ROUNDS = 16; // how many rounds of encryption (default = 16)
     protected static final int BLOCK_SIZE = 16; // how many bytes in one data-block
-    protected static final int INPUT_WHITEN = 0;
-    protected static final int OUTPUT_WHITEN = INPUT_WHITEN + BLOCK_SIZE / 4;
-    protected static final int ROUND_SUBKEYS = OUTPUT_WHITEN + BLOCK_SIZE / 4; // 2*(# rounds)
-    protected static final int SK_STEP = 0x02020202;
-    protected static final int SK_BUMP = 0x01010101;
-    protected static final int SK_ROTL = 9;
+    protected static final int INPUT_WHITEN = 0; //TODO
+    protected static final int OUTPUT_WHITEN = INPUT_WHITEN + BLOCK_SIZE / 4; //TODO
+    protected static final int ROUND_SUBKEYS = OUTPUT_WHITEN + BLOCK_SIZE / 4; // TODO
+    protected static final int SK_STEP = 0x02020202; //TODO
+    protected static final int SK_BUMP = 0x01010101; //TODO
+    protected static final int SK_ROTL = 9; //TODO
 
     /**
      * Fixed 8x8 permutation substitution box
@@ -151,8 +154,8 @@ final class Constants {
             }
     };
     /**
-     * Define the fixed p0/p1 permutations used in keyed S-box lookup. By changing the following constant definitions,
-     * the S-boxes will automatically get changed in the Twofish engine.
+     * Define the fixed p0/p1 permutations used in keyed S-box lookup.
+     * By changing the following constant definitions, the S-boxes will automatically get changed in the Twofish engine.
      */
     protected static final int P_00 = 1;
     protected static final int P_01 = 0;
@@ -204,11 +207,10 @@ final class Constants {
         }
     }
 
+    /**
+     * Precompute the MDS matrix
+     */
     static {
-
-        //
-        // precompute the MDS matrix
-        //
         int[] m1 = new int[2];
         int[] mX = new int[2];
         int[] mY = new int[2];

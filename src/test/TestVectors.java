@@ -1,13 +1,20 @@
 package test;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import twofish.Twofish;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+/**
+ * All test vectors were taken from Bruce Schneier's website:
+ * <br>
+ * <a href="https://www.schneier.com/wp-content/uploads/2015/12/ecb_ival.txt">https://www.schneier.com/wp-content/uploads/2015/12/ecb_ival.txt</a>
+ */
 class TestVectors {
 
     @Test
+    @DisplayName("128 bit key")
     public void testVector1() throws Exception {
         String key = "00000000000000000000000000000000";
         String plaintext = "00000000000000000000000000000000";
@@ -18,6 +25,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("128 bit key")
     public void testVector2() throws Exception {
         String key = "00000000000000000000000000000000";
         String plaintext = "9F589F5CF6122C32B6BFEC2F2AE8C35A";
@@ -28,6 +36,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("128 bit key")
     public void testVector3() throws Exception {
         String key = "9F589F5CF6122C32B6BFEC2F2AE8C35A";
         String plaintext = "D491DB16E7B1C39E86CB086B789F5419";
@@ -38,6 +47,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("192 bit key")
     public void testVector4() throws Exception {
         String key = "000000000000000000000000000000000000000000000000";
         String plaintext = "00000000000000000000000000000000";
@@ -48,6 +58,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("192 bit key")
     public void testVector5() throws Exception {
         String key = "000000000000000000000000000000000000000000000000";
         String plaintext = "EFA71F788965BD4453F860178FC19101";
@@ -58,6 +69,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("192 bit key")
     public void testVector6() throws Exception {
         String key = "EFA71F788965BD4453F860178FC191010000000000000000";
         String plaintext = "88B2B2706B105E36B446BB6D731A1E88";
@@ -68,6 +80,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("192 bit key")
     public void testVector7() throws Exception {
         String key = "88B2B2706B105E36B446BB6D731A1E88EFA71F788965BD44";
         String plaintext = "39DA69D6BA4997D585B6DC073CA341B2";
@@ -78,6 +91,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("256 bit key")
     public void testVector8() throws Exception {
         String key = "0000000000000000000000000000000000000000000000000000000000000000";
         String plaintext = "00000000000000000000000000000000";
@@ -88,6 +102,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("256 bit key")
     public void testVector9() throws Exception {
         String key = "0000000000000000000000000000000000000000000000000000000000000000";
         String plaintext = "57FF739D4DC92C1BD7FC01700CC8216F";
@@ -98,6 +113,7 @@ class TestVectors {
     }
 
     @Test
+    @DisplayName("256 bit key")
     public void testVector10() throws Exception {
         String key = "57FF739D4DC92C1BD7FC01700CC8216F00000000000000000000000000000000";
         String plaintext = "D43BB7556EA32E46F2A282B7D45B4E0D";
@@ -109,6 +125,7 @@ class TestVectors {
 
 
     @Test
+    @DisplayName("256 bit key")
     public void testVector11() throws Exception {
         String key = "D43BB7556EA32E46F2A282B7D45B4E0D57FF739D4DC92C1BD7FC01700CC8216F";
         String plaintext = "90AFE91BB288544F2C32DC239B2635E6";
