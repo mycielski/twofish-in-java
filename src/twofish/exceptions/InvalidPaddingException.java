@@ -1,5 +1,8 @@
 package twofish.exceptions;
 
+/**
+ * Thrown when data does not have expected padding.
+ */
 public class InvalidPaddingException extends IncorrectDecryptionException{
     public InvalidPaddingException(String message) {
         super(message);
