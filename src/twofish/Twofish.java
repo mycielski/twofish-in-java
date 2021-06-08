@@ -93,29 +93,6 @@ public class Twofish {
         boolean ciphertextIsPadded = false;
         for (int i = 0; i < ciphertextBytes.length; i += 16) {
             byte[] decryptedBlock = blockDecrypt(ciphertextBytes, i, key);
-            /*
-            if (i == 0 && isPaddingBlock(decryptedBlock)) {
-                ciphertextIsPadded = true;
-                continue;
-            } else if (i == 16 && ciphertextIsPadded) {
-                int paddingBytes = 0;
-                for (byte b :
-                        decryptedBlock) {
-                    if (b == (byte) 0) {
-                        paddingBytes++;
-                    } else if (b == (byte) 1) {
-                        paddingBytes++;
-                        break;
-                    }
-                }
-                byte[] decryptedBlockWithoutPadding = new byte[BLOCK_SIZE - paddingBytes];
-                for (int j = paddingBytes; j < BLOCK_SIZE; j++) {
-                    decryptedBlockWithoutPadding[j - paddingBytes] = decryptedBlock[j];
-                }
-                plaintextBytes = concatenateArrays(plaintextBytes, decryptedBlockWithoutPadding);
-                continue;
-            }
-            */
             plaintextBytes = concatenateArrays(plaintextBytes, decryptedBlock);
         }
         return removePadding(plaintextBytes);
@@ -132,7 +109,6 @@ public class Twofish {
             if (paddedText[paddingBytes] == (byte) 1) {
                 paddingBytes++;
                 byte[] plaintextWithoutPadding = new byte[paddedText.length - paddingBytes];
-                System.out.println(plaintextWithoutPadding.length);
                 for (int i = paddingBytes; i < paddedText.length; i++) {
                     plaintextWithoutPadding[i - paddingBytes] = paddedText[i];
                 }
@@ -166,24 +142,6 @@ public class Twofish {
         byte[] result = Arrays.copyOf(array1, array1.length + array2.length);
         System.arraycopy(array2, 0, result, array1.length, array2.length);
         return result;
-    }
-
-    public static void main(String[] args) throws InvalidKeyException {
-        byte[] key = new byte[16];
-        byte[] plaintext = decodeHexString("019F9809DE1711858FAAC3A3BA20FBC3");
-        byte[] ciphertext = twofishECBEncrypt(plaintext, "D491DB16E7B1C39E86CB086B789F5419");
-        for (byte b : ciphertext) {
-            String st = String.format("%02X", b);
-            System.out.print(st);
-        }
-        System.out.println();
-        System.out.println("--------------------");
-        byte[] decrypted = twofishECBDecrypt(ciphertext, "D491DB16E7B1C39E86CB086B789F5419");
-        for (byte b : decrypted) {
-            String st = String.format("%02X", b);
-            System.out.print(st);
-        }
-        System.out.println();
     }
 
 
