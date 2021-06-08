@@ -1,6 +1,9 @@
 package twofish;
 
 
+import twofish.exceptions.InvalidHexException;
+import twofish.exceptions.WrongNumberOfBitsException;
+
 import java.util.Arrays;
 
 import static twofish.Constants.*;
@@ -126,10 +129,10 @@ public class IntermediateUtilityMethods {
                 sBox[0x200 + 2 * _b(x, R + 3) + 1];
     }
 
-    static byte[] decodeHexString(String hexString) throws InvalidKeyException {
+    static byte[] decodeHexString(String hexString) throws WrongNumberOfBitsException {
         if (hexString.length() % 2 == 1) {
-            throw new InvalidKeyException(
-                    "Non-integer number of bytes.");
+            throw new WrongNumberOfBitsException(
+                    "Bit length not a multiple of 8. String: " + hexString);
         }
 
         byte[] bytes = new byte[hexString.length() / 2];
@@ -148,7 +151,7 @@ public class IntermediateUtilityMethods {
     private static int toDigit(char hexChar) {
         int digit = Character.digit(hexChar, 16);
         if (digit == -1) {
-            throw new IllegalArgumentException(
+            throw new InvalidHexException(
                     "Invalid Hexadecimal Character: " + hexChar);
         }
         return digit;

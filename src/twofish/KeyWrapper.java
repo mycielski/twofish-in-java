@@ -1,5 +1,7 @@
 package twofish;
 
+import twofish.exceptions.InvalidKeyException;
+
 import static twofish.Constants.*;
 
 public class KeyWrapper {

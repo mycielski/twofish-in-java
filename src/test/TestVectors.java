@@ -14,7 +14,7 @@ class TestVectors {
             "\n" +
             "KEY=00000000000000000000000000000000\n" +
             "PT=00000000000000000000000000000000\n")
-    public void testVector1() throws InvalidKeyException {
+    public void testVector1() throws Exception {
         String key = "00000000000000000000000000000000";
         String plaintext = "00000000000000000000000000000000";
         byte[] ciphertext = Twofish.twofishECBEncrypt(plaintext, key);

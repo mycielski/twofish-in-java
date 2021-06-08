@@ -1,38 +1,40 @@
 package twofish;
 
+import twofish.exceptions.InvalidKeyException;
+
 import static twofish.Decryption.blockDecrypt;
 import static twofish.Encryption.blockEncrypt;
 import static twofish.KeyWrapper.makeKey;
 
 public class Twofish {
 
-    public static byte[] twofishECBEncrypt(String plaintext, byte[] keyBytes) throws InvalidKeyException {
+    public static byte[] twofishECBEncrypt(String plaintext, byte[] keyBytes) throws Exception {
         return twofishECBEncrypt(IntermediateUtilityMethods.decodeHexString(plaintext), keyBytes);
     }
 
-    public static byte[] twofishECBDecrypt(String ciphertext, byte[] keyBytes) throws InvalidKeyException {
+    public static byte[] twofishECBDecrypt(String ciphertext, byte[] keyBytes) throws Exception {
         return twofishECBDecrypt(IntermediateUtilityMethods.decodeHexString(ciphertext), keyBytes);
     }
 
 
-    public static byte[] twofishECBEncrypt(String plaintext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBEncrypt(String plaintext, String keyString) throws Exception {
         byte[] keyBytes = IntermediateUtilityMethods.decodeHexString(keyString);
         byte[] plaintextBytes = IntermediateUtilityMethods.decodeHexString(plaintext);
         return twofishECBEncrypt(plaintextBytes, keyBytes);
     }
 
-    public static byte[] twofishECBDecrypt(String ciphertext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBDecrypt(String ciphertext, String keyString) throws Exception {
         byte[] keyBytes = IntermediateUtilityMethods.decodeHexString(keyString);
         byte[] ciphertextBytes = IntermediateUtilityMethods.decodeHexString(ciphertext);
         return twofishECBDecrypt(ciphertextBytes, keyBytes);
     }
 
-    public static byte[] twofishECBEncrypt(byte[] plaintext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBEncrypt(byte[] plaintext, String keyString) throws Exception {
         byte[] keyBytes = IntermediateUtilityMethods.decodeHexString(keyString);
         return twofishECBEncrypt(plaintext, keyBytes);
     }
 
-    public static byte[] twofishECBDecrypt(byte[] ciphertext, String keyString) throws InvalidKeyException {
+    public static byte[] twofishECBDecrypt(byte[] ciphertext, String keyString) throws Exception {
         byte[] keyBytes = IntermediateUtilityMethods.decodeHexString(keyString);
         return twofishECBDecrypt(ciphertext, keyBytes);
     }

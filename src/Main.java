@@ -11,7 +11,7 @@ import static twofish.Twofish.twofishECBEncrypt;
 
 public class Main {
 
-    public static void main(String[] args) throws InvalidKeyException {
+    public static void main(String[] args) throws Exception {
         try {
             String encryptionKey192bit = "D1079B789F666649B6BD7D1629F1F77E7AFF7A70CA2FF28A";
 
