@@ -1,7 +1,6 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static twofish.Twofish.twofishECBEncrypt;
 
 import twofish.*;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +18,7 @@ class TestVectors {
         String plaintext = "00000000000000000000000000000000";
         byte[] ciphertext = Twofish.twofishECBEncrypt(plaintext, key);
         assertArrayEquals(removePaddingFromCiphertext(ciphertext), hexStringToByteArray("9F589F5CF6122C32B6BFEC2F2AE8C35A"));
+        assertArrayEquals(Twofish.twofishECBDecrypt(ciphertext, key), hexStringToByteArray(plaintext));
     }
 
 
