@@ -8,25 +8,32 @@ import java.util.Arrays;
 
 import static twofish.Constants.*;
 
+/**
+ * Class containing all the methods during the rounds of encrypting and decrypting data and methods for handling hexadecimal user input.
+ */
 public class IntermediateUtilityMethods {
 
-
+    //TODO javadoc
     protected static int b0(int x) {
         return x & 0xFF;
     }
 
+    //TODO javadoc
     protected static int b1(int x) {
         return (x >>> 8) & 0xFF;
     }
 
+    //TODO javadoc
     protected static int b2(int x) {
         return (x >>> 16) & 0xFF;
     }
 
+    //TODO javadoc
     protected static int b3(int x) {
         return (x >>> 24) & 0xFF;
     }
 
+    //TODO javadoc
     protected static int F32(int k64Cnt, int x, int[] k32) {
         int b0 = b0(x);
         int b1 = b1(x);
@@ -67,7 +74,7 @@ public class IntermediateUtilityMethods {
         return result;
     }
 
-
+    //TODO zrozumieć to:
     /**
      * Use (12, 8) Reed-Solomon code over GF(256) to produce a key S-box 32-bit entity from two key material 32-bit
      * entities.
@@ -86,6 +93,7 @@ public class IntermediateUtilityMethods {
         return r;
     }
 
+    //TODO zrozumieć to:
     /**
      * Reed-Solomon code parameters: (12, 8) reversible code:<p>
      * <pre>
@@ -102,7 +110,8 @@ public class IntermediateUtilityMethods {
     }
 
 
-    private static int _b(int x, int N) {
+    //TODO javadoc
+    private static int b(int x, int N) {
         int result = 0;
         switch (N % 4) {
             case 0:
@@ -122,13 +131,21 @@ public class IntermediateUtilityMethods {
     }
 
 
+    //TODO javadoc
     protected static int Fe32(int[] sBox, int x, int R) {
-        return sBox[2 * _b(x, R)] ^
-                sBox[2 * _b(x, R + 1) + 1] ^
-                sBox[0x200 + 2 * _b(x, R + 2)] ^
-                sBox[0x200 + 2 * _b(x, R + 3) + 1];
+        return sBox[2 * b(x, R)] ^
+                sBox[2 * b(x, R + 1) + 1] ^
+                sBox[0x200 + 2 * b(x, R + 2)] ^
+                sBox[0x200 + 2 * b(x, R + 3) + 1];
     }
 
+    /**
+     * Method to convert a string of hex digits to a byte array.
+     * @param hexString String of hex digits
+     * @return byte array
+     * @throws WrongNumberOfBitsException thrown when hexString cannot be converted to bytes due to its length not being
+     * a multiple of 8.
+     */
     static byte[] decodeHexString(String hexString) throws WrongNumberOfBitsException {
         if (hexString.length() % 2 == 1) {
             throw new WrongNumberOfBitsException(
@@ -142,12 +159,22 @@ public class IntermediateUtilityMethods {
         return bytes;
     }
 
+    /**
+     * Method to convert a hex string of two characters to a single byte
+     * @param hexString Hex string of length 2
+     * @return byte parsed from hexString
+     */
     private static byte hexToByte(String hexString) {
         int firstDigit = toDigit(hexString.charAt(0));
         int secondDigit = toDigit(hexString.charAt(1));
         return (byte) ((firstDigit << 4) + secondDigit);
     }
 
+    /**
+     * Method to convert a single hex digit to int
+     * @param hexChar a hexadecimal digit
+     * @return value of the hexChar as an int
+     */
     private static int toDigit(char hexChar) {
         int digit = Character.digit(hexChar, 16);
         if (digit == -1) {
@@ -157,6 +184,12 @@ public class IntermediateUtilityMethods {
         return digit;
     }
 
+    /**
+     * Method to concatenate byte arrays
+     * @param array1 first byte array
+     * @param array2 second byte array
+     * @return 1 dimensional byte array consisting of the first array's values and then the second array values.
+     */
     static byte[] concatenateArrays(byte[] array1, byte[] array2) {
         byte[] result = Arrays.copyOf(array1, array1.length + array2.length);
         System.arraycopy(array2, 0, result, array1.length, array2.length);

@@ -4,10 +4,11 @@ import static twofish.Constants.*;
 
 public class Encryption {
     /**
-     * Encrypt exactly one block of plaintext.
+     * Encrypt exactly one block of plaintext in ECB mode (no IV).
      *
      * @param in         The plaintext.
-     * @param inOffset   Index of in from which to start considering data.
+     * @param inOffset   Index of in from which to start considering data. Use when decrypting data larger than 1 block
+     *                   to specify, which block is to be decrypted.
      * @param sessionKey The session key to use for encryption.
      * @return The ciphertext generated from a plaintext using the session key.
      */

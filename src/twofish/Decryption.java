@@ -6,8 +6,9 @@ public class Decryption {
     /**
      * Decrypt one block of ciphertext in ECB mode (no IV).
      *
-     * @param in         The ciphertext.
-     * @param inOffset   Index of in from which to start considering data.
+     * @param in         Ciphertext.
+     * @param inOffset   Index of in from which to start considering data. Use when decrypting data larger than 1 block
+     *                   to specify, which block is to be decrypted.
      * @param sessionKey The session key to use for decryption.
      * @return The plaintext generated from a ciphertext using the session key.
      */

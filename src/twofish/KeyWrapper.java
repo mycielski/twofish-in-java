@@ -4,6 +4,9 @@ import twofish.exceptions.InvalidKeyException;
 
 import static twofish.Constants.*;
 
+/**
+ * Wrapper class for 64/128/192/256-bit encryption keys.
+ */
 public class KeyWrapper {
     /**
      * Expand a user-supplied key material into a session key.
@@ -90,8 +93,6 @@ public class KeyWrapper {
             }
         }
 
-        Object sessionKey = new Object[]{sBox, subKeys};
-
-        return sessionKey;
+        return new Object[]{sBox, subKeys};
     }
 }

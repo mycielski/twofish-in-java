@@ -177,35 +177,19 @@ final class Constants {
     protected static final int P_32 = 1;
     protected static final int P_33 = P_31 ^ 1;
     protected static final int P_34 = 1;
+
     /**
      * Primitive polynomial for GF(256)
      */
     protected static final int GF256_FDBK = 0x169;
     protected static final int GF256_FDBK_2 = 0x169 / 2;
     protected static final int GF256_FDBK_4 = 0x169 / 4;
+
     /**
      * Maximum Distance Separable matrix
      */
     protected static final int[][] MDS = new int[4][256]; // blank final
     protected static final int RS_GF_FDBK = 0x14D; // field generator
-
-    /**
-     * Padding blocks. Static code below used to initialize those padding blocks with random data to make known-plaintext attacks difficult.
-     */
-    protected static final byte[] PADDING_BLOCK1 = new byte[16];
-    protected static final byte[] PADDING_BLOCK2 = new byte[16];
-
-    static {
-        Random random = new Random();
-        PADDING_BLOCK1[0] = (byte) 128;
-        for (int i = 1; i < PADDING_BLOCK1.length; i++) {
-            PADDING_BLOCK1[i] = (byte) (random.nextInt(61) + 2);
-        }
-        PADDING_BLOCK2[15] = (byte) 1;
-        for (int i = 0; i < PADDING_BLOCK2.length - 1; i++) {
-            PADDING_BLOCK2[i] = (byte) (random.nextInt(61) + 2);
-        }
-    }
 
     /**
      * Precompute the MDS matrix
@@ -226,19 +210,19 @@ final class Constants {
             mX[1] = Mx_X(j) & 0xFF;
             mY[1] = Mx_Y(j) & 0xFF;
 
-            MDS[0][i] = m1[P_00] << 0 | // fill matrix with above elements
+            MDS[0][i] = m1[P_00] | // fill matrix with computed elements
                     mX[P_00] << 8 |
                     mY[P_00] << 16 |
                     mY[P_00] << 24;
-            MDS[1][i] = mY[P_10] << 0 |
+            MDS[1][i] = mY[P_10] |
                     mY[P_10] << 8 |
                     mX[P_10] << 16 |
                     m1[P_10] << 24;
-            MDS[2][i] = mX[P_20] << 0 |
+            MDS[2][i] = mX[P_20] |
                     mY[P_20] << 8 |
                     m1[P_20] << 16 |
                     mY[P_20] << 24;
-            MDS[3][i] = mX[P_30] << 0 |
+            MDS[3][i] = mX[P_30] |
                     m1[P_30] << 8 |
                     mY[P_30] << 16 |
                     mX[P_30] << 24;
@@ -247,26 +231,65 @@ final class Constants {
 
     }
 
-// Static code - to intialise the MDS matrix
-//...........................................................................
+// Static code - to initialize the MDS matrix
 
+    // TODO: uzupełnić javadoc poniżej bo ja nie wiem co to jest to FDBK i Mx
+    /**
+     * Linear feedback shift register
+     * @param x
+     * @return
+     */
     private static int LFSR1(int x) {
         return (x >> 1) ^
                 ((x & 0x01) != 0 ? GF256_FDBK_2 : 0);
     }
 
+    /**
+     * Linear feedback shift register
+     * @param x
+     * @return
+     */
     private static int LFSR2(int x) {
         return (x >> 2) ^
                 ((x & 0x02) != 0 ? GF256_FDBK_2 : 0) ^
                 ((x & 0x01) != 0 ? GF256_FDBK_4 : 0);
     }
 
+    /**
+     *
+     * @param x
+     * @return
+     */
     private static int Mx_X(int x) {
         return x ^ LFSR2(x);
     }            // 5B
 
+    /**
+     *
+     * @param x
+     * @return
+     */
     private static int Mx_Y(int x) {
         return x ^ LFSR1(x) ^ LFSR2(x);
     } // EF
 
+
+
+    /**
+     * Padding blocks. Static code below used to initialize those padding blocks with random data to make known-plaintext attacks difficult.
+     */
+    protected static final byte[] PADDING_BLOCK1 = new byte[16];
+    protected static final byte[] PADDING_BLOCK2 = new byte[16];
+
+    static {
+        Random random = new Random();
+        PADDING_BLOCK1[0] = (byte) 128;
+        for (int i = 1; i < PADDING_BLOCK1.length; i++) {
+            PADDING_BLOCK1[i] = (byte) (random.nextInt(61) + 2);
+        }
+        PADDING_BLOCK2[15] = (byte) 1;
+        for (int i = 0; i < PADDING_BLOCK2.length - 1; i++) {
+            PADDING_BLOCK2[i] = (byte) (random.nextInt(61) + 2);
+        }
+    }
 }

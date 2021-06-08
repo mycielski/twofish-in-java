@@ -2,6 +2,7 @@ package twofish;
 
 import static twofish.Constants.*;
 
+//TODO javadoc
 class MDSMatrixCalculations {
     static {
 
@@ -38,22 +39,22 @@ class MDSMatrixCalculations {
 //...........................................................................
 
 
-    private static final int LFSR1(int x) {
+    private static int LFSR1(int x) {
         return (x >> 1) ^
                 ((x & 0x01) != 0 ? GF256_FDBK_2 : 0);
     }
 
-    private static final int LFSR2(int x) {
+    private static int LFSR2(int x) {
         return (x >> 2) ^
                 ((x & 0x02) != 0 ? GF256_FDBK_2 : 0) ^
                 ((x & 0x01) != 0 ? GF256_FDBK_4 : 0);
     }
 
-    private static final int Mx_X(int x) {
+    private static int Mx_X(int x) {
         return x ^ LFSR2(x);
     }            // 5B
 
-    private static final int Mx_Y(int x) {
+    private static int Mx_Y(int x) {
         return x ^ LFSR1(x) ^ LFSR2(x);
     } // EF
 
