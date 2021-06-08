@@ -6,6 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 
+/**
+ * In this class a real world application of Twofish is presented.
+ * The algorithm is used to encrypt and decrypt a txt file.
+ */
 public class Main {
 
     public static void main(String[] args) throws Exception {
