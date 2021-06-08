@@ -46,7 +46,7 @@ class Padding {
      * @param paddedText padded text
      * @return text with removed padding
      */
-    static byte[] removePadding(byte[] paddedText) {
+    static byte[] removePadding(byte[] paddedText) throws InvalidPaddingException {
         int paddingBytes = 0;
         if (paddedText[0] == (byte) 128) {
             paddingBytes++;

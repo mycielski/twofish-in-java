@@ -1,6 +1,7 @@
 package twofish;
 
 import twofish.exceptions.InvalidKeyException;
+import twofish.exceptions.InvalidPaddingException;
 
 import static twofish.Decryption.blockDecrypt;
 import static twofish.Encryption.blockEncrypt;
@@ -44,8 +45,9 @@ public class Twofish {
      * @param keyBytes decryption key
      * @return plaintext
      * @throws InvalidKeyException thrown when supplied key does not conform to the Twofish key requirements
+     * @throws InvalidPaddingException thrown when supplied plaintext was not padded correctly
      */
-    public static byte[] twofishECBDecrypt(byte[] ciphertextBytes, byte[] keyBytes) throws InvalidKeyException {
+    public static byte[] twofishECBDecrypt(byte[] ciphertextBytes, byte[] keyBytes) throws InvalidKeyException, InvalidPaddingException {
         byte[] plaintextBytes = new byte[0];
 
         Object key = makeKey(keyBytes);
