@@ -1,12 +1,7 @@
 package test;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import twofish.Twofish;
-import twofish.exceptions.InvalidHexException;
-import twofish.exceptions.InvalidKeyException;
-import twofish.exceptions.WrongNumberOfBitsException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -122,38 +117,6 @@ class TestVectors {
         assertArrayEquals(removePaddingFromCiphertext(ciphertextBytes), hexStringToByteArray(ciphertext));
         assertArrayEquals(Twofish.twofishECBDecrypt(ciphertextBytes, key), hexStringToByteArray(plaintext));
     }
-
-
-    @Test
-    @DisplayName("Wrong key length")
-    public void wrongKeyLength() {
-        String key = "000000000000000000000000000000000";
-        String plaintext = "00000000000000000000000000000000";
-        Assertions.assertThrows(WrongNumberOfBitsException.class, () -> {
-            byte[] ciphertext = Twofish.twofishECBEncrypt(plaintext, key);
-        });
-    }
-
-    @Test
-    @DisplayName("Non-hex chars")
-    public void nonHexCharacters() {
-        String key = "00000000ZZ000000000000000000000000";
-        String plaintext = "00000000000000000000000000000000";
-        Assertions.assertThrows(InvalidHexException.class, () -> {
-            byte[] ciphertext = Twofish.twofishECBEncrypt(plaintext, key);
-        });
-    }
-
-    @Test
-    @DisplayName("Key String is of length 0")
-    public void zeroLenghtKey() {
-        String key = "";
-        String plaintext = "00000000000000000000000000000000";
-        Assertions.assertThrows(InvalidKeyException.class, () -> {
-            byte[] ciphertext = Twofish.twofishECBEncrypt(plaintext, key);
-        });
-    }
-
 
     private byte[] removePaddingFromCiphertext(byte[] paddedCiphertext) {
         byte[] ciphertextWithoutPadding = new byte[16];
