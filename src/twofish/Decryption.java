@@ -35,10 +35,10 @@ public class Decryption {
                 (in[inOffset++] & 0xFF) << 16 |
                 (in[inOffset++] & 0xFF) << 24;
 
-        x2 ^= sKey[OUTPUT_WHITEN];
-        x3 ^= sKey[OUTPUT_WHITEN + 1];
-        x0 ^= sKey[OUTPUT_WHITEN + 2];
-        x1 ^= sKey[OUTPUT_WHITEN + 3];
+        x2 ^= sKey[4];
+        x3 ^= sKey[5];
+        x0 ^= sKey[6];
+        x1 ^= sKey[7];
 
         int k = ROUND_SUBKEYS + 2 * ROUNDS - 1;
         int t0, t1;
@@ -57,10 +57,10 @@ public class Decryption {
             x2 = x2 << 1 | x2 >>> 31;
             x2 ^= t0 + t1 + sKey[k--];
         }
-        x0 ^= sKey[INPUT_WHITEN];
-        x1 ^= sKey[INPUT_WHITEN + 1];
-        x2 ^= sKey[INPUT_WHITEN + 2];
-        x3 ^= sKey[INPUT_WHITEN + 3];
+        x0 ^= sKey[0];
+        x1 ^= sKey[1];
+        x2 ^= sKey[2];
+        x3 ^= sKey[3];
 
         byte[] result = new byte[]{
                 (byte) x0, (byte) (x0 >>> 8), (byte) (x0 >>> 16), (byte) (x0 >>> 24),

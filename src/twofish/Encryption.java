@@ -35,10 +35,10 @@ public class Encryption {
                 (in[inOffset++] & 0xFF) << 16 |
                 (in[inOffset++] & 0xFF) << 24;
 
-        x0 ^= sKey[INPUT_WHITEN];
-        x1 ^= sKey[INPUT_WHITEN + 1];
-        x2 ^= sKey[INPUT_WHITEN + 2];
-        x3 ^= sKey[INPUT_WHITEN + 3];
+        x0 ^= sKey[0];
+        x1 ^= sKey[1];
+        x2 ^= sKey[2];
+        x3 ^= sKey[3];
 
         int t0, t1;
         int k = ROUND_SUBKEYS;
@@ -56,10 +56,10 @@ public class Encryption {
             x1 = x1 << 1 | x1 >>> 31;
             x1 ^= t0 + 2 * t1 + sKey[k++];
         }
-        x2 ^= sKey[OUTPUT_WHITEN];
-        x3 ^= sKey[OUTPUT_WHITEN + 1];
-        x0 ^= sKey[OUTPUT_WHITEN + 2];
-        x1 ^= sKey[OUTPUT_WHITEN + 3];
+        x2 ^= sKey[4];
+        x3 ^= sKey[5];
+        x0 ^= sKey[6];
+        x1 ^= sKey[7];
 
         byte[] result = new byte[]{
                 (byte) x2, (byte) (x2 >>> 8), (byte) (x2 >>> 16), (byte) (x2 >>> 24),

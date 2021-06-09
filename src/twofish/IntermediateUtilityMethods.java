@@ -13,32 +13,54 @@ import static twofish.Constants.*;
  */
 public class IntermediateUtilityMethods {
 
-    //TODO javadoc
-    protected static int b0(int x) {
+    /**
+     * Takes out of 32 bit number 16 least significant bits
+     * @param x 32 input for AND operation
+     * @return 16 least significant bits of x
+     */
+    protected static int LSB16(int x) {
         return x & 0xFF;
     }
 
-    //TODO javadoc
-    protected static int b1(int x) {
+    /**
+     * Takes out of 32 bit number middle 16 bits
+     * @param x 32 bit input for the right shift and AND operation
+     * @return middle 16 bits of x
+     */
+    protected static int MB16(int x) {
         return (x >>> 8) & 0xFF;
     }
 
-    //TODO javadoc
-    protected static int b2(int x) {
+    /**
+     * Takes out of 32 bit number 16 most significant bits
+     * @param x 32 bit input for the right shift and AND operation
+     * @return 16 most significant bits of x
+     */
+    protected static int MSB16(int x) {
         return (x >>> 16) & 0xFF;
     }
 
-    //TODO javadoc
-    protected static int b3(int x) {
+    /**
+     * Takes out of 32 bit number 8 most significant bits
+     * @param x 32 bit input for the right shift and AND operation
+     * @return 8 most significant bits of x
+     */
+    protected static int MSB8(int x) {
         return (x >>> 24) & 0xFF;
     }
 
-    //TODO javadoc
+    /**
+     * the h-function
+     * @param k64Cnt key bit length
+     * @param x 32 bit input number
+     * @param k32 array of 32-bit entities
+     * @return one word output - the new key
+     */
     protected static int F32(int k64Cnt, int x, int[] k32) {
-        int b0 = b0(x);
-        int b1 = b1(x);
-        int b2 = b2(x);
-        int b3 = b3(x);
+        int b0 = LSB16(x);
+        int b1 = MB16(x);
+        int b2 = MSB16(x);
+        int b3 = MSB8(x);
         int k0 = k32[0];
         int k1 = k32[1];
         int k2 = k32[2];
@@ -48,33 +70,32 @@ public class IntermediateUtilityMethods {
         switch (k64Cnt & 3) {
             case 1:
                 result =
-                        MDS[0][(P[P_01][b0] & 0xFF) ^ b0(k0)] ^
-                                MDS[1][(P[P_11][b1] & 0xFF) ^ b1(k0)] ^
-                                MDS[2][(P[P_21][b2] & 0xFF) ^ b2(k0)] ^
-                                MDS[3][(P[P_31][b3] & 0xFF) ^ b3(k0)];
+                        MDS[0][(P[P_01][b0] & 0xFF) ^ LSB16(k0)] ^
+                                MDS[1][(P[P_11][b1] & 0xFF) ^ MB16(k0)] ^
+                                MDS[2][(P[P_21][b2] & 0xFF) ^ MSB16(k0)] ^
+                                MDS[3][(P[P_31][b3] & 0xFF) ^ MSB8(k0)];
                 break;
             case 0:  // same as 4
-                b0 = (P[P_04][b0] & 0xFF) ^ b0(k3);
-                b1 = (P[P_14][b1] & 0xFF) ^ b1(k3);
-                b2 = (P[P_24][b2] & 0xFF) ^ b2(k3);
-                b3 = (P[P_34][b3] & 0xFF) ^ b3(k3);
+                b0 = (P[P_04][b0] & 0xFF) ^ LSB16(k3);
+                b1 = (P[P_14][b1] & 0xFF) ^ MB16(k3);
+                b2 = (P[P_24][b2] & 0xFF) ^ MSB16(k3);
+                b3 = (P[P_34][b3] & 0xFF) ^ MSB8(k3);
             case 3:
-                b0 = (P[P_03][b0] & 0xFF) ^ b0(k2);
-                b1 = (P[P_13][b1] & 0xFF) ^ b1(k2);
-                b2 = (P[P_23][b2] & 0xFF) ^ b2(k2);
-                b3 = (P[P_33][b3] & 0xFF) ^ b3(k2);
+                b0 = (P[P_03][b0] & 0xFF) ^ LSB16(k2);
+                b1 = (P[P_13][b1] & 0xFF) ^ MB16(k2);
+                b2 = (P[P_23][b2] & 0xFF) ^ MSB16(k2);
+                b3 = (P[P_33][b3] & 0xFF) ^ MSB8(k2);
             case 2:                             // 128-bit keys (optimize for this case)
                 result =
-                        MDS[0][(P[P_01][(P[P_02][b0] & 0xFF) ^ b0(k1)] & 0xFF) ^ b0(k0)] ^
-                                MDS[1][(P[P_11][(P[P_12][b1] & 0xFF) ^ b1(k1)] & 0xFF) ^ b1(k0)] ^
-                                MDS[2][(P[P_21][(P[P_22][b2] & 0xFF) ^ b2(k1)] & 0xFF) ^ b2(k0)] ^
-                                MDS[3][(P[P_31][(P[P_32][b3] & 0xFF) ^ b3(k1)] & 0xFF) ^ b3(k0)];
+                        MDS[0][(P[P_01][(P[P_02][b0] & 0xFF) ^ LSB16(k1)] & 0xFF) ^ LSB16(k0)] ^
+                                MDS[1][(P[P_11][(P[P_12][b1] & 0xFF) ^ MB16(k1)] & 0xFF) ^ MB16(k0)] ^
+                                MDS[2][(P[P_21][(P[P_22][b2] & 0xFF) ^ MSB16(k1)] & 0xFF) ^ MSB16(k0)] ^
+                                MDS[3][(P[P_31][(P[P_32][b3] & 0xFF) ^ MSB8(k1)] & 0xFF) ^ MSB8(k0)];
                 break;
         }
         return result;
     }
 
-    //TODO zrozumieć to:
     /**
      * Use (12, 8) Reed-Solomon code over GF(256) to produce a key S-box 32-bit entity from two key material 32-bit
      * entities.
@@ -93,7 +114,6 @@ public class IntermediateUtilityMethods {
         return r;
     }
 
-    //TODO zrozumieć to:
     /**
      * Reed-Solomon code parameters: (12, 8) reversible code:<p>
      * <pre>
@@ -110,33 +130,44 @@ public class IntermediateUtilityMethods {
     }
 
 
-    //TODO javadoc
-    private static int b(int x, int N) {
+    /**
+     * Method which depending on N takes specific bits out of 32 bit number
+     * @param x 32 bit input number
+     * @param N parameter determining which bits should be taken out of x
+     * @return specific bits out of x
+     */
+    private static int whichBits(int x, int N) {
         int result = 0;
         switch (N % 4) {
             case 0:
-                result = b0(x);
+                result = LSB16(x);
                 break;
             case 1:
-                result = b1(x);
+                result = MB16(x);
                 break;
             case 2:
-                result = b2(x);
+                result = MSB16(x);
                 break;
             case 3:
-                result = b3(x);
+                result = MSB8(x);
                 break;
         }
         return result;
     }
 
 
-    //TODO javadoc
+    /**
+     * s-Boxes XOR
+     * @param sBox array of s-Boxes
+     * @param x input 32 bit number
+     * @param R parameter determining which bits should be taken out of x
+     * @return XORed specific s-Boxes
+     */
     protected static int Fe32(int[] sBox, int x, int R) {
-        return sBox[2 * b(x, R)] ^
-                sBox[2 * b(x, R + 1) + 1] ^
-                sBox[0x200 + 2 * b(x, R + 2)] ^
-                sBox[0x200 + 2 * b(x, R + 3) + 1];
+        return sBox[2 * whichBits(x, R)] ^
+                sBox[2 * whichBits(x, R + 1) + 1] ^
+                sBox[0x200 + 2 * whichBits(x, R + 2)] ^
+                sBox[0x200 + 2 * whichBits(x, R + 3) + 1];
     }
 
     /**

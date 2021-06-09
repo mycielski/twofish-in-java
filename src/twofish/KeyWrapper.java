@@ -70,26 +70,26 @@ public class KeyWrapper {
             b0 = b1 = b2 = b3 = i;
             switch (k64Cnt & 3) {
                 case 1:
-                    sBox[2 * i] = MDS[0][(P[P_01][b0] & 0xFF) ^ IntermediateUtilityMethods.b0(k0)];
-                    sBox[2 * i + 1] = MDS[1][(P[P_11][b1] & 0xFF) ^ IntermediateUtilityMethods.b1(k0)];
-                    sBox[0x200 + 2 * i] = MDS[2][(P[P_21][b2] & 0xFF) ^ IntermediateUtilityMethods.b2(k0)];
-                    sBox[0x200 + 2 * i + 1] = MDS[3][(P[P_31][b3] & 0xFF) ^ IntermediateUtilityMethods.b3(k0)];
+                    sBox[2 * i] = MDS[0][(P[P_01][b0] & 0xFF) ^ IntermediateUtilityMethods.LSB16(k0)];
+                    sBox[2 * i + 1] = MDS[1][(P[P_11][b1] & 0xFF) ^ IntermediateUtilityMethods.MB16(k0)];
+                    sBox[0x200 + 2 * i] = MDS[2][(P[P_21][b2] & 0xFF) ^ IntermediateUtilityMethods.MSB16(k0)];
+                    sBox[0x200 + 2 * i + 1] = MDS[3][(P[P_31][b3] & 0xFF) ^ IntermediateUtilityMethods.MSB8(k0)];
                     break;
                 case 0: // same as 4
-                    b0 = (P[P_04][b0] & 0xFF) ^ IntermediateUtilityMethods.b0(k3);
-                    b1 = (P[P_14][b1] & 0xFF) ^ IntermediateUtilityMethods.b1(k3);
-                    b2 = (P[P_24][b2] & 0xFF) ^ IntermediateUtilityMethods.b2(k3);
-                    b3 = (P[P_34][b3] & 0xFF) ^ IntermediateUtilityMethods.b3(k3);
+                    b0 = (P[P_04][b0] & 0xFF) ^ IntermediateUtilityMethods.LSB16(k3);
+                    b1 = (P[P_14][b1] & 0xFF) ^ IntermediateUtilityMethods.MB16(k3);
+                    b2 = (P[P_24][b2] & 0xFF) ^ IntermediateUtilityMethods.MSB16(k3);
+                    b3 = (P[P_34][b3] & 0xFF) ^ IntermediateUtilityMethods.MSB8(k3);
                 case 3:
-                    b0 = (P[P_03][b0] & 0xFF) ^ IntermediateUtilityMethods.b0(k2);
-                    b1 = (P[P_13][b1] & 0xFF) ^ IntermediateUtilityMethods.b1(k2);
-                    b2 = (P[P_23][b2] & 0xFF) ^ IntermediateUtilityMethods.b2(k2);
-                    b3 = (P[P_33][b3] & 0xFF) ^ IntermediateUtilityMethods.b3(k2);
+                    b0 = (P[P_03][b0] & 0xFF) ^ IntermediateUtilityMethods.LSB16(k2);
+                    b1 = (P[P_13][b1] & 0xFF) ^ IntermediateUtilityMethods.MB16(k2);
+                    b2 = (P[P_23][b2] & 0xFF) ^ IntermediateUtilityMethods.MSB16(k2);
+                    b3 = (P[P_33][b3] & 0xFF) ^ IntermediateUtilityMethods.MSB8(k2);
                 case 2: // 128-bit keys
-                    sBox[2 * i] = MDS[0][(P[P_01][(P[P_02][b0] & 0xFF) ^ IntermediateUtilityMethods.b0(k1)] & 0xFF) ^ IntermediateUtilityMethods.b0(k0)];
-                    sBox[2 * i + 1] = MDS[1][(P[P_11][(P[P_12][b1] & 0xFF) ^ IntermediateUtilityMethods.b1(k1)] & 0xFF) ^ IntermediateUtilityMethods.b1(k0)];
-                    sBox[0x200 + 2 * i] = MDS[2][(P[P_21][(P[P_22][b2] & 0xFF) ^ IntermediateUtilityMethods.b2(k1)] & 0xFF) ^ IntermediateUtilityMethods.b2(k0)];
-                    sBox[0x200 + 2 * i + 1] = MDS[3][(P[P_31][(P[P_32][b3] & 0xFF) ^ IntermediateUtilityMethods.b3(k1)] & 0xFF) ^ IntermediateUtilityMethods.b3(k0)];
+                    sBox[2 * i] = MDS[0][(P[P_01][(P[P_02][b0] & 0xFF) ^ IntermediateUtilityMethods.LSB16(k1)] & 0xFF) ^ IntermediateUtilityMethods.LSB16(k0)];
+                    sBox[2 * i + 1] = MDS[1][(P[P_11][(P[P_12][b1] & 0xFF) ^ IntermediateUtilityMethods.MB16(k1)] & 0xFF) ^ IntermediateUtilityMethods.MB16(k0)];
+                    sBox[0x200 + 2 * i] = MDS[2][(P[P_21][(P[P_22][b2] & 0xFF) ^ IntermediateUtilityMethods.MSB16(k1)] & 0xFF) ^ IntermediateUtilityMethods.MSB16(k0)];
+                    sBox[0x200 + 2 * i + 1] = MDS[3][(P[P_31][(P[P_32][b3] & 0xFF) ^ IntermediateUtilityMethods.MSB8(k1)] & 0xFF) ^ IntermediateUtilityMethods.MSB8(k0)];
             }
         }
 
