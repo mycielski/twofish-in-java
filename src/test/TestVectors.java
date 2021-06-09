@@ -19,9 +19,9 @@ class TestVectors {
         String key = "00000000000000000000000000000000";
         String plaintext = "00000000000000000000000000000000";
         String ciphertext = "9F589F5CF6122C32B6BFEC2F2AE8C35A";
-        byte[] ciphertextBytes = Twofish.twofishECBEncrypt(plaintext, key);
-        assertArrayEquals(removePaddingFromCiphertext(ciphertextBytes), hexStringToByteArray(ciphertext));
-        assertArrayEquals(Twofish.twofishECBDecrypt(ciphertextBytes, key), hexStringToByteArray(plaintext));
+        byte[] ciphertextBytes = Twofish.twofishECBEncryptNoPadding(plaintext, key);
+        assertArrayEquals(ciphertextBytes, hexStringToByteArray(ciphertext));
+        assertArrayEquals(Twofish.twofishECBDecryptNoPadding(ciphertextBytes, key), hexStringToByteArray(plaintext));
     }
 
     @Test

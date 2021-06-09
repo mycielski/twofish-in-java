@@ -1,5 +1,6 @@
 package twofish;
 
+import twofish.exceptions.InputSizeMismatchException;
 import twofish.exceptions.InvalidKeyException;
 import twofish.exceptions.InvalidPaddingException;
 
@@ -46,6 +47,8 @@ public class Twofish {
      * @throws InvalidKeyException thrown when supplied key does not conform to the Twofish key requirements
      */
     public static byte[] twofishECBEncryptNoPadding(byte[] plaintext, byte[] keyBytes) throws InvalidKeyException {
+        if (plaintext.length % 16 != 0) throw new InputSizeMismatchException("Plaintext size = " + plaintext.length);
+
         byte[] ciphertext = new byte[0];
 
         Object key = makeKey(keyBytes);
@@ -70,6 +73,9 @@ public class Twofish {
      * @throws InvalidPaddingException thrown when supplied plaintext was not padded correctly
      */
     public static byte[] twofishECBDecrypt(byte[] ciphertextBytes, byte[] keyBytes) throws InvalidKeyException, InvalidPaddingException {
+        if (ciphertextBytes.length % 16 != 0) throw new InputSizeMismatchException("Plaintext size = " + ciphertextBytes.length);
+
+
         byte[] plaintextBytes = new byte[0];
 
         Object key = makeKey(keyBytes);
@@ -114,7 +120,7 @@ public class Twofish {
             byte[] decryptedBlock = blockDecrypt(ciphertextBytes, i, key);
             plaintextBytes = IntermediateUtilityMethods.concatenateArrays(plaintextBytes, decryptedBlock);
         }
-        return Padding.removePadding(plaintextBytes);
+        return plaintextBytes;
     }
 
     public static byte[] twofishECBDecryptNoPadding(byte[] ciphertextBytes, String key) throws InvalidKeyException, InvalidPaddingException {
