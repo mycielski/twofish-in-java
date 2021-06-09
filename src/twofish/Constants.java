@@ -9,12 +9,10 @@ final class Constants {
 
     protected static final int ROUNDS = 16; // how many rounds of encryption (default = 16)
     protected static final int BLOCK_SIZE = 16; // how many bytes in one data-block
-    protected static final int INPUT_WHITEN = 0; //TODO
-    protected static final int OUTPUT_WHITEN = INPUT_WHITEN + BLOCK_SIZE / 4; //TODO
-    protected static final int ROUND_SUBKEYS = OUTPUT_WHITEN + BLOCK_SIZE / 4; // TODO
-    protected static final int SK_STEP = 0x02020202; //TODO
-    protected static final int SK_BUMP = 0x01010101; //TODO
-    protected static final int SK_ROTL = 9; //TODO
+    protected static final int ROUND_SUBKEYS = 4 + BLOCK_SIZE / 4; //number of subkeys used to whiten plain text
+    protected static final int SK_STEP = 0x02020202; //a fixed constant used to generate even subkeys
+    protected static final int SK_BUMP = 0x01010101; //a fixed constant used to generate odd subkeys
+    protected static final int SK_ROTL = 9; //fixed number determining bit shift in keys generator
 
     /**
      * Fixed 8x8 permutation substitution box
@@ -181,7 +179,6 @@ final class Constants {
     /**
      * Primitive polynomial for GF(256)
      */
-    protected static final int GF256_FDBK = 0x169;
     protected static final int GF256_FDBK_2 = 0x169 / 2;
     protected static final int GF256_FDBK_4 = 0x169 / 4;
 
@@ -229,15 +226,12 @@ final class Constants {
         }
 
 
-    }
+    } // Static code - to initialize the MDS matrix
 
-// Static code - to initialize the MDS matrix
-
-    // TODO: uzupełnić javadoc poniżej bo ja nie wiem co to jest to FDBK i Mx
     /**
      * Linear feedback shift register
-     * @param x
-     * @return
+     * @param x input bit which is a linear function of its previous state
+     * @return output stream from shift register used in pseudo-random generators
      */
     private static int LFSR1(int x) {
         return (x >> 1) ^
@@ -246,8 +240,8 @@ final class Constants {
 
     /**
      * Linear feedback shift register
-     * @param x
-     * @return
+     * @param x input bit which is a linear function of its previous state
+     * @return output stream from shift register used in pseudo-random generators
      */
     private static int LFSR2(int x) {
         return (x >> 2) ^
@@ -256,22 +250,22 @@ final class Constants {
     }
 
     /**
-     *
-     * @param x
-     * @return
+     * x XOR with linear feedback shift register
+     * @param x input for XOR operation
+     * @return x XORed with linear feedback shift register
      */
     private static int Mx_X(int x) {
         return x ^ LFSR2(x);
-    }            // 5B
+    }
 
     /**
-     *
-     * @param x
-     * @return
+     * x XOR with linear feedback shift register
+     * @param x input for double XOR operation
+     * @return x XORed with two linear feedback shift registers
      */
     private static int Mx_Y(int x) {
         return x ^ LFSR1(x) ^ LFSR2(x);
-    } // EF
+    }
 
 
 
